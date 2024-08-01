@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\ViewErrorBag;
 
 class ProductoController extends Controller
 {
@@ -21,7 +22,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //
+        return view('productos.addproducto');
     }
 
     /**
@@ -29,7 +30,14 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $producto = new Producto();
+        $producto->nombre = $request->input('nombre');
+        $producto->descripcion = $request->input('descripcion');
+        $producto->precio = $request->input('precio');
+
+        $producto->save();
+        return redirect()->route("listaproductos");
+
     }
 
     /**
@@ -59,8 +67,14 @@ class ProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
+
+
+
     public function destroy(string $id)
     {
-        //
+        $productos = Producto::find($id);
+        $productos->delete();
+        return redirect()->route("listaproductos");
     }
 }
